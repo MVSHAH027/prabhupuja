@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prabhu Puja Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Vadodara:wght@400;600&family=Poppins:wght@400;600&display=swap');
+
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5a623;
+            --background-color: #f0f4f8;
+            --card-bg-color: #ffffff;
+            --text-color: #333333;
+            --correct-color: #28a745;
+            --incorrect-color: #dc3545;
+            --font-en: 'Poppins', sans-serif;
+            --font-gu: 'Hind Vadodara', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-en);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid var(--primary-color);
+            background-color: var(--card-bg-color);
+            color: var(--primary-color);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active, .lang-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--card-bg-color);
+        }
+
+        .quiz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s;
+        }
+        
+        .question-card:focus-within {
+            transform: translateY(-5px);
+        }
+
+        .question-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .option:hover {
+            background-color: #dbe4f0;
+            border-color: var(--primary-color);
+        }
+        
+        .option.correct {
+            background-color: var(--correct-color);
+            color: white;
+            border-color: var(--correct-color);
+        }
+
+        .option.incorrect {
+            background-color: var(--incorrect-color);
+            color: white;
+            border-color: var(--incorrect-color);
+        }
+        
+        .option.disabled {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #eef5fd;
+            border-left: 4px solid var(--secondary-color);
+            font-size: 0.95em;
+            display: none; /* Initially hidden */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="quiz-title">પ્રભુપૂજા ક્વિઝ</h1>
+            <div class="lang-switcher">
+                <button class="lang-btn active" id="btn-gu" onclick="switchLanguage('gu')">ગુજરાતી</button>
+                <button class="lang-btn" id="btn-en" onclick="switchLanguage('en')">English</button>
+            </div>
+        </div>
+
+        <div id="quiz-container" class="quiz-container">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question_gu: "‘જિન’ નો અર્થ શું છે?",
+                question_en: "What is the meaning of 'Jin'?",
+                options_gu: ["જે દેખાવમાં સુંદર હોય", "જે રાગ-દ્વેષને જીતે છે", "જે મોક્ષમાં ગયા હોય", "જે જ્ઞાની હોય"],
+                options_en: ["One who is beautiful in appearance", "One who conquers attachment and aversion (raag-dvesh)", "One who has gone to Moksha", "One who is knowledgeable"],
+                correct: 1,
+                explanation_gu: "જિન એટલે જે રાગ-દ્વેષને જીતે છે. તેમની પૂજા કરવાથી આપણને જીવનનો ધ્યેય મળે છે.",
+                explanation_en: "Jin means one who conquers attachment and aversion. Worshipping them helps us find our life's goal."
+            },
+            {
+                question_gu: "પ્રભુપૂજાથી આપણા દુઃખો કેમ ઘટે છે?",
+                question_en: "Why does our suffering decrease with Prabhu Puja?",
+                options_gu: ["ભગવાન આપણને આશીર્વાદ આપે છે", "આપણા રાગ-દ્વેષ ઘટે છે", "આપણને પૈસા મળે છે", "આપણા શત્રુઓ નાશ પામે છે"],
+                options_en: ["God gives us blessings", "Our attachment and aversion decrease", "We get money", "Our enemies are destroyed"],
+                correct: 1,
+                explanation_gu: "આપણા બધા દુઃખોનું મૂળ કારણ રાગ-દ્વેષ છે. જિનપૂજાથી રાગ-દ્વેષ ઘટતા દુઃખો પણ ઘટે છે.",
+                explanation_en: "The root cause of all our suffering is attachment and aversion. With Jin Puja, as these decrease, so does our suffering."
+            },
+            {
+                question_gu: "પ્રભુપૂજાથી મન પર શી અસર થાય છે?",
+                question_en: "What is the effect of Prabhu Puja on the mind?",
+                options_gu: ["મન ચંચળ બને છે", "મન ઉદાસ થાય છે", "મન પ્રસન્ન અને શાંત થાય છે", "મન માં અહંકાર વધે છે"],
+                options_en: ["The mind becomes restless", "The mind becomes sad", "The mind becomes happy and calm", "Ego increases in the mind"],
+                correct: 2,
+                explanation_gu: "ભગવાનની પૂજાથી મન પ્રસન્ન અને શાંત થાય છે, જેનાથી શારીરિક અને માનસિક દુઃખો દૂર થાય છે.",
+                explanation_en: "Worshipping God makes the mind happy and calm, which helps in overcoming physical and mental suffering."
+            },
+            {
+                question_gu: "જૈન ધર્મ અનુસાર ભગવાન કેવા છે?",
+                question_en: "According to Jainism, what is God like?",
+                options_gu: ["કૃતકૃત્ય", "અપૂર્ણ", "રાગ-દ્વેષ વાળા", "દુઃખી"],
+                options_en: ["Krutkrutya (one whose all tasks are accomplished)", "Incomplete", "Having attachment and aversion", "Sad"],
+                correct: 0,
+                explanation_gu: "જૈનીઝમ માને છે કે ભગવાન કૃતકૃત્ય છે, એટલે કે જેમના બધા જ કામ થઈ ગયા છે અને હવે કશું જ કરવાનું બાકી નથી.",
+                explanation_en: "Jainism believes that God is 'Krutkrutya', meaning one whose all tasks are accomplished and nothing remains to be done."
+            },
+            {
+                question_gu: "પૂજાનું ફળ કેવી રીતે મળે છે?",
+                question_en: "How does one receive the fruits of puja?",
+                options_gu: ["ભગવાન મોક્ષમાંથી આવીને ફળ આપે છે", "શુભભાવ જાગવાથી પાપક્ષય થાય છે અને પુણ્યનું ઉપાર્જન થાય છે", "દેવતાઓ પ્રસન્ન થઈને ફળ આપે છે", "પૂજારી ફળ આપે છે"],
+                options_en: ["God comes from Moksha to give the fruit", "Through awakening of auspicious feelings, sins are destroyed and merit (punya) is earned", "Deities become pleased and give the fruit", "The priest gives the fruit"],
+                correct: 1,
+                explanation_gu: "જૈન ધર્મની થિયરી મુજબ, ગુણપૂર્ણની પૂજાથી શુભભાવ જાગે છે, જેનાથી પાપનો ક્ષય અને પુણ્યનું ઉપાર્જન થાય છે.",
+                explanation_en: "According to Jain theory, worshipping the virtuous awakens auspicious feelings, which leads to the destruction of sins and the accumulation of merit."
+            },
+            {
+                question_gu: "પૂ. હરિભદ્રસૂરિ મહારાજાએ કેટલા ગ્રંથોની રચના કરી હતી?",
+                question_en: "How many texts did Pu. Haribhadrasuri Maharaj compose?",
+                options_gu: ["108", "1444", "500", "1000"],
+                options_en: ["108", "1444", "500", "1000"],
+                correct: 1,
+                explanation_gu: "પૂ. હરિભદ્રસૂરિ મહારાજા ૧૪૪૪ ગ્રંથના કર્તા તરીકે ઓળખાય છે.",
+                explanation_en: "Pu. Haribhadrasuri Maharaj is known as the author of 1444 texts."
+            },
+            {
+                question_gu: "પૂજામાં થતી દેખીતી હિંસાને શા માટે હિંસા ગણવામાં આવતી નથી?",
+                question_en: "Why is the apparent violence in puja not considered true violence?",
+                options_gu: ["કારણ કે તે ભગવાન માટે છે", "કારણ કે તેમાં અનુબંધથી અહિંસા છે", "કારણ કે તેમાં જીવો મરતા નથી", "કારણ કે તે શાસ્ત્રોમાં લખેલું છે"],
+                options_en: ["Because it is for God", "Because its consequential chain (Anubandh) is non-violence", "Because no beings die in it", "Because it is written in the scriptures"],
+                correct: 1,
+                explanation_gu: "પૂજામાં સ્વરૂપહિંસા હોવા છતાં, તેનો ઉદ્દેશ્ય અને પરંપરા જીવને મોક્ષ તરફ લઈ જાય છે, જે કાયમી અભયદાન છે. માટે તે અનુબંધ અહિંસા છે.",
+                explanation_en: "Although there is apparent violence in puja, its purpose and tradition lead the soul towards liberation, which is permanent fearlessness for all. Hence, it is consequential non-violence."
+            },
+            {
+                question_gu: "કયા પ્રકારની હિંસા સાચી હિંસા છે?",
+                question_en: "Which type of violence is the true violence?",
+                options_gu: ["હેતુ હિંસા", "સ્વરૂપ હિંસા", "અનુબંધ હિંસા", "આપેલ તમામ"],
+                options_en: ["Hetu Hinsa (Intentional)", "Swaroop Hinsa (Physical)", "Anubandh Hinsa (Consequential Chain)", "All of the above"],
+                correct: 2,
+                explanation_gu: "અનુબંધ હિંસા, જેમાં હિંસાની પરંપરા ઊભી થાય, તે જ સાચી હિંસા છે. દયાળુ વ્યક્તિ દ્વારા પક્ષીને બચાવવા પથ્થર મારવો એ સ્વરૂપ હિંસા છે પણ અનુબંધ અહિંસા છે.",
+                explanation_en: "Anubandh Hinsa, which creates a tradition of violence, is the true violence. A kind person throwing a stone to save a bird is physical violence but consequential non-violence."
+            },
+            {
+                question_gu: "મુનિ મહારાજ શા માટે જિનપૂજા નથી કરતા?",
+                question_en: "Why don't Muni Maharajs (monks) perform Jin Puja?",
+                options_gu: ["તેમને પૂજા કરવી ગમતી નથી", "તેમની પાસે સમય નથી", "તેમને પૂજાનું ફળ (સર્વવિરતિ) મળી ચૂક્યું હોય છે", "તેઓ હિંસાથી ડરે છે"],
+                options_en: ["They don't like to do puja", "They don't have time", "They have already received the fruit of puja (Sarvaviriti - complete renunciation)", "They are afraid of violence"],
+                correct: 2,
+                explanation_gu: "મુનિ મહારાજોને જિનપૂજાનું ફળ, એટલે કે સર્વવિરતિ, મળી ચૂક્યું હોય છે, માટે તેમના માટે તે આવશ્યક નથી.",
+                explanation_en: "Muni Maharajs have already attained the fruit of Jin Puja, which is complete renunciation (Sarvaviriti), so it is not essential for them."
+            },
+            {
+                question_gu: "જે વ્યક્તિ રોજિંદા જીવનમાં હિંસા કરે છે, તેના માટે પ્રભુપૂજા શું છે?",
+                question_en: "For a person who commits violence in daily life, what is Prabhu Puja?",
+                options_gu: ["એક પાપ", "એક કર્તવ્ય", "સમયનો બગાડ", "એક શોખ"],
+                options_en: ["A sin", "A duty", "A waste of time", "A hobby"],
+                correct: 1,
+                explanation_gu: "જે પોતાના શરીર, પરિવાર વગેરે માટે હિંસા કરે જ છે, તેના માટે જિનપૂજા એક કર્તવ્ય છે કારણ કે તે તેનામાં ભક્તિ અને પ્રભુપ્રીતિ જેવા ગુણો ઉમેરે છે.",
+                explanation_en: "For someone who already commits violence for their body, family, etc., Jin Puja is a duty because it adds qualities like devotion and love for the divine."
+            },
+            {
+                question_gu: "શાસ્ત્રોની અડધી વાત માનવી અને અડધી ન માનવી, તેને લેખક શું કહે છે?",
+                question_en: "What does the author call believing half of the scriptures and not believing the other half?",
+                options_gu: ["સમજદારી", "ચાલાકી", "ચિટિંગ (છેતરપિંડી)", "અજ્ઞાન"],
+                options_en: ["Understanding", "Cleverness", "Cheating", "Ignorance"],
+                correct: 2,
+                explanation_gu: "સંયમ યુગને સમજાવે છે કે શાસ્ત્રોની અડધી વાત માનવી અને અડધી ન માનવી એ છેતરપિંડી છે.",
+                explanation_en: "Sanyam explains to Yug that believing half of the scriptures and ignoring the other half is a form of cheating."
+            },
+            {
+                question_gu: "પૂજા કરવાથી વ્યક્તિનો કયો દુર્ગુણ ઘટે છે?",
+                question_en: "Which negative quality in a person decreases by performing puja?",
+                options_gu: ["ઈગો (અહંકાર)", "આળસ", "લોભ", "ક્રોધ"],
+                options_en: ["Ego", "Laziness", "Greed", "Anger"],
+                correct: 0,
+                explanation_gu: "પ્રભુપૂજાથી આપણો ઈગો (અહંકાર) ઘટે છે, જેનાથી આપણું જીવન સરળ બને છે.",
+                explanation_en: "Prabhu Puja helps in decreasing our ego, which makes our life smoother."
+            },
+            {
+                question_gu: "પૂ. હરિભદ્રસૂરિ મહારાજાએ કયા ગ્રંથમાં કહ્યું છે કે કૃતકૃત્યની પૂજા સફળ છે?",
+                question_en: "In which text did Pu. Haribhadrasuri Maharaj say that the worship of a 'Krutkrutya' is fruitful?",
+                options_gu: ["ધર્મસંગ્રહણી", "યોગબિંદુ", "ષોડશક પ્રકરણ", "અનેકાંતજયપતાકા"],
+                options_en: ["Dharmasangrahani", "Yogbindu", "Shodashak Prakaran", "Anekantajayapataka"],
+                correct: 2,
+                explanation_gu: "પૂ. હરિભદ્રસૂરિ મહારાજાએ ષોડશક પ્રકરણમાં કહ્યું છે કે જિનેશ્વર પરમાત્મા કૃતકૃત્ય છે, માટે જ એમની પૂજા સફળ છે.",
+                explanation_en: "Pu. Haribhadrasuri Maharaj stated in the Shodashak Prakaran that since the Jineshwar Parmatma is 'Krutkrutya', their worship is fruitful."
+            },
+            {
+                question_gu: "ધૂલિયા શહેરની ઘટનામાં, પ્રભુપૂજાથી કયો રોગ મટ્યો હતો?",
+                question_en: "In the incident of Dhulia city, which disease was cured by Prabhu Puja?",
+                options_gu: ["પેટનો દુખાવો", "માથાનો દુખાવો", "ગળાની કેન્સરની ગાંઠ", "તાવ"],
+                options_en: ["Stomach ache", "Headache", "A cancerous throat tumor", "Fever"],
+                correct: 2,
+                explanation_gu: "મહારાષ્ટ્રના ધૂલિયા શહેરમાં, એક બહેનને પ્રભુપૂજા કરીને નમન લગાડવાથી ગળાની કેન્સરની મોટી ગાંઠ ઓગળી ગઈ હતી.",
+                explanation_en: "In Dhulia city, Maharashtra, a woman's large cancerous throat tumor dissolved after performing Prabhu Puja and applying 'naman'."
+            },
+            {
+                question_gu: "કયા આગમ સૂત્રોમાં જિનાલય/પ્રતિમા/પૂજાનો ઉલ્લેખ છે?",
+                question_en: "Which Agam Sutras mention Jinalaya/Pratima/Puja?",
+                options_gu: ["માત્ર ભગવતીસૂત્ર", "માત્ર સ્થાનાંગસૂત્ર", "ઉપરના બંને અને બીજા પણ", "કોઈ આગમમાં નથી"],
+                options_en: ["Only Bhagavati Sutra", "Only Sthananga Sutra", "Both of the above and others too", "In no Agam"],
+                correct: 2,
+                explanation_gu: "સ્થાનાંગસૂત્ર, ભગવતીસૂત્ર, જ્ઞાતાધર્મકથાસૂત્ર, અને બીજા ઘણા આગમોમાં જિનાલય, પ્રતિમા અને પૂજાની સ્પષ્ટ વાત છે.",
+                explanation_en: "Sthananga Sutra, Bhagavati Sutra, Jnatadharmakathasutra, and many other Agams clearly mention Jinalaya, idols, and worship."
+            },
+            {
+                question_gu: "મહોપાધ્યાય શ્રી યશોવિજયજી મહારાજાએ કયા સ્તવનમાં પૂજાના આશયને પ્રગટ કર્યો છે?",
+                question_en: "In which stavan did Mahopadhyay Shri Yashovijayji Maharaj reveal the intention behind puja?",
+                options_gu: ["વીર સ્તવન", "સવા સો ગાથાના સ્તવનમાં", "પાર્શ્વનાથ સ્તવન", "આદિનાથ સ્તવન"],
+                options_en: ["Veer Stavan", "In the Stavan of 125 Gathas", "Parshwanath Stavan", "Adinath Stavan"],
+                correct: 1,
+                explanation_gu: "મહોપાધ્યાયશ્રી યશોવિજયજી મહારાજાએ સવા સો ગાથાના સ્તવનમાં કહ્યું છે કે સ્વરૂપથી સાવદ્ય (પાપયુક્ત) દેખાતી પૂજા અનુબંધે નિરવદ્ય (પાપરહિત) છે.",
+                explanation_en: "Mahopadhyay Shri Yashovijayji Maharaj, in the Stavan of 125 Gathas, explained that puja, which may seem sinful in form, is sinless in its consequence."
+            },
+            {
+                question_gu: "જેઓ જિનપૂજામાં પાપ જુએ છે, તેમના માટે પૂ. હરિભદ્રસૂરિ મહારાજા શું કહે છે?",
+                question_en: "What does Pu. Haribhadrasuri Maharaj say about those who see sin in Jin Puja?",
+                options_gu: ["તેઓ સાચા જ્ઞાની છે", "તેઓ 'મોહ'નો ભોગ બન્યા છે", "તેઓ સાચા ત્યાગી છે", "તેમની વાત સાચી છે"],
+                options_en: ["They are truly knowledgeable", "They have become victims of 'Moha' (delusion)", "They are true ascetics", "They are correct"],
+                correct: 1,
+                explanation_gu: "પૂ. હરિભદ્રસૂરિ મહારાજા ધર્મસંગ્રહણી ગ્રંથમાં કહે છે કે જેઓ જિનપૂજામાં પાપ જુએ છે, તેઓ 'મોહ'નો ભોગ બન્યા છે, જે તેમનું ઘોર અજ્ઞાન છે.",
+                explanation_en: "In the Dharmasangrahani text, Pu. Haribhadrasuri Maharaj says that those who see sin in Jin Puja are victims of 'Moha' (delusion), which is their grave ignorance."
+            },
+            {
+                question_gu: "વાર્તાલાપના અંતમાં સંયમ યુગને કયું પુસ્તક સૂચવે છે?",
+                question_en: "At the end of the conversation, which book does Sanyam suggest to Yug?",
+                options_gu: ["ચાલો પાઠશાળા જઈએ", "ચાલો જિનાલયે જઈએ", "પૂજાનું રહસ્ય", "જૈન ધર્મનો પરિચય"],
+                options_en: ["Let's go to Pathshala", "Chalo Jinalaye Jaiye (Let's go to the Temple)", "The Secret of Puja", "Introduction to Jainism"],
+                correct: 1,
+                explanation_gu: "પૂજાને વ્યવસ્થિત રીતે શીખવા માટે, સંયમ યુગને 'ચાલો જિનાલયે જઈએ' પુસ્તક વાંચવાનું સૂચન કરે છે.",
+                explanation_en: "To learn puja systematically, Sanyam suggests Yug to read the book 'Chalo Jinalaye Jaiye'."
+            },
+            {
+                question_gu: "શિકારીનું પંખીઓને દાણા નાખવાનું કાર્ય કેવું છે?",
+                question_en: "What is the nature of the hunter's act of feeding grains to birds?",
+                options_gu: ["સ્વરૂપથી અહિંસક પણ અનુબંધથી હિંસક", "સ્વરૂપથી અને અનુબંધથી અહિંસક", "સ્વરૂપથી હિંસક પણ અનુબંધથી અહિંસક", "સ્વરૂપથી અને અનુબંધથી હિંસક"],
+                options_en: ["Non-violent in form but violent in consequence", "Non-violent in both form and consequence", "Violent in form but non-violent in consequence", "Violent in both form and consequence"],
+                correct: 0,
+                explanation_gu: "શિકારીની પ્રવૃત્તિ દેખીતી રીતે અહિંસક છે (સ્વરૂપહિંસા નથી), પણ તેનો ઈરાદો અને પરિણામ હિંસક હોવાથી તે અનુબંધ હિંસા છે.",
+                explanation_en: "The hunter's activity is apparently non-violent (no physical violence), but because its intention and result are violent, it is consequential violence."
+            },
+            {
+                question_gu: "જિનપૂજા કરવાથી કઈ શક્તિ વધે છે?",
+                question_en: "Which power increases by performing Jin Puja?",
+                options_gu: ["માત્ર શારીરિક શક્તિ", "માત્ર માનસિક શક્તિ", "શારીરિક અને માનસિક શક્તિ", "આર્થિક શક્તિ"],
+                options_en: ["Only physical power", "Only mental power", "Physical and mental power", "Financial power"],
+                correct: 2,
+                explanation_gu: "પ્રભુપૂજાના લાભોથી આપણી શારીરિક અને માનસિક શક્તિ વધે છે, જેનાથી જીવનમાં સફળતા મળે છે.",
+                explanation_en: "The benefits of Prabhu Puja increase our physical and mental power, leading to success in life."
+            },
+            {
+                question_gu: "જેમ ખોરાક આપણી જરૂરિયાત છે, તેમ સંયમ મુજબ બીજી કઈ વસ્તુ આપણી જરૂરિયાત છે?",
+                question_en: "Just as food is our necessity, according to Sanyam, what else is our necessity?",
+                options_gu: ["પૈસા", "સારી નોકરી", "જિનપૂજા", "મનોરંજન"],
+                options_en: ["Money", "A good job", "Jin Puja", "Entertainment"],
+                correct: 2,
+                explanation_gu: "સંયમ કહે છે કે જેવી રીતે ખોરાક આપણી જરૂરિયાત છે, તેવી જ રીતે જિનપૂજા પણ આપણી જરૂરિયાત છે.",
+                explanation_en: "Sanyam says that just as food is our necessity, in the same way, Jin Puja is also our necessity."
+            },
+            {
+                question_gu: "જિનપૂજાના શુભભાવ જીવને ક્યાં સુધી લઈ જાય છે?",
+                question_en: "How far do the auspicious feelings of Jin Puja take a soul?",
+                options_gu: ["સ્વર્ગ સુધી", "સર્વવિરતિ અને મોક્ષ સુધી", "માત્ર સુખી જીવન સુધી", "બીજા જન્મ સુધી"],
+                options_en: ["Up to heaven", "Up to complete renunciation and liberation (Moksha)", "Only up to a happy life", "Up to the next life"],
+                correct: 1,
+                explanation_gu: "જિનપૂજાના શુભભાવ જીવને પરંપરાએ સર્વવિરતિ અને અંતે મોક્ષ સુધી લઈ જાય છે.",
+                explanation_en: "The auspicious feelings from Jin Puja traditionally lead a soul towards complete renunciation and ultimately to liberation (Moksha)."
+            },
+            {
+                question_gu: "ઘાટકોપરના એક ભાઈ કઈ દુર્ઘટનાથી બચી ગયા હતા?",
+                question_en: "From which accident did a man from Ghatkopar survive?",
+                options_gu: ["ટ્રેન અકસ્માત", "પૂર", "ગેસ-બ્લાસ્ટ", "ભૂકંપ"],
+                options_en: ["Train accident", "Flood", "Gas-blast", "Earthquake"],
+                correct: 2,
+                explanation_gu: "વાર્તાલાપમાં ઉલ્લેખ છે કે ઘાટકોપરના એક ભાઈ પ્રભુપૂજાના પ્રભાવથી ગેસ-બ્લાસ્ટમાં મૃત્યુ પામતા બચી ગયા હતા.",
+                explanation_en: "It is mentioned in the conversation that a man from Ghatkopar was saved from dying in a gas-blast due to the effect of Prabhu Puja."
+            },
+            {
+                question_gu: "પૂજાનો વિરોધ કરનારાઓ માટે કયો મુદ્દો મુખ્ય બની ગયો છે?",
+                question_en: "What has become the main issue for those who oppose puja?",
+                options_gu: ["હિંસાનો મુદ્દો", "પોતાના પંથનું અસ્તિત્વ", "શાસ્ત્રોની સાચી સમજ", "ભગવાનની ભક્તિ"],
+                options_en: ["The issue of violence", "The existence of their own sect", "The true understanding of scriptures", "Devotion to God"],
+                correct: 1,
+                explanation_gu: "સંયમ મુજબ, હવે તેમના માટે પ્રતિમા કે પૂજા મુખ્ય મુદ્દો નથી, પણ પોતાના પંથનું અસ્તિત્વ ટકાવી રાખવું એ મુખ્ય મુદ્દો બની ગયો છે.",
+                explanation_en: "According to Sanyam, the main issue for them is no longer the idol or puja, but the survival of their own sect."
+            },
+            {
+                question_gu: "જિનપૂજાથી જીવને ચૌદે રાજલોકના જીવોને શું મળે છે?",
+                question_en: "What do the beings of the fourteen realms (Rajlok) get from a soul who performs Jin Puja?",
+                options_gu: ["દુઃખ", "કંઈ નહીં", "કાયમી અભયદાન", "ખોરાક"],
+                options_en: ["Sorrow", "Nothing", "Permanent fearlessness (Abhaydaan)", "Food"],
+                correct: 2,
+                explanation_gu: "પૂજાના પરિણામે જીવ મોક્ષ પ્રાપ્ત કરે છે, જેનાથી તેના તરફથી ચૌદે રાજલોકના સર્વ જીવોને કાયમી અભયદાન મળી જાય છે.",
+                explanation_en: "As a result of puja, the soul attains liberation, thereby granting permanent fearlessness to all beings of the fourteen realms from its side."
+            }
+        ];
+
+        let currentLanguage = 'gu';
+        let shuffledQuestions = [];
+
+        const quizContainer = document.getElementById('quiz-container');
+        const quizTitle = document.getElementById('quiz-title');
+        const btnGu = document.getElementById('btn-gu');
+        const btnEn = document.getElementById('btn-en');
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function renderQuiz() {
+            quizContainer.innerHTML = '';
+            quizTitle.textContent = currentLanguage === 'gu' ? 'પ્રભુપૂજા ક્વિઝ' : 'Prabhu Puja Quiz';
+            
+            document.body.style.fontFamily = currentLanguage === 'gu' ? 'var(--font-gu)' : 'var(--font-en)';
+
+            shuffledQuestions.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+
+                const questionText = document.createElement('div');
+                questionText.className = 'question-text';
+                questionText.textContent = `${index + 1}. ${q['question_' + currentLanguage]}`;
+
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'options-list';
+
+                const options = q['options_' + currentLanguage];
+                options.forEach((optionText, optionIndex) => {
+                    const optionItem = document.createElement('li');
+                    optionItem.className = 'option';
+                    optionItem.textContent = optionText;
+                    optionItem.onclick = () => checkAnswer(q, optionIndex, index);
+                    optionsList.appendChild(optionItem);
+                });
+
+                const explanation = document.createElement('div');
+                explanation.className = 'explanation';
+                explanation.id = `explanation-${index}`;
+                explanation.innerHTML = `<b>${currentLanguage === 'gu' ? 'સમજૂતી' : 'Explanation'}:</b> ${q['explanation_' + currentLanguage]}`;
+
+                questionCard.appendChild(questionText);
+                questionCard.appendChild(optionsList);
+                questionCard.appendChild(explanation);
+                quizContainer.appendChild(questionCard);
+            });
+        }
+
+        function checkAnswer(question, selectedIndex, questionIndex) {
+            const questionCard = quizContainer.children[questionIndex];
+            const options = questionCard.querySelectorAll('.option');
+            const explanationDiv = document.getElementById(`explanation-${questionIndex}`);
+
+            options.forEach((opt, idx) => {
+                opt.classList.add('disabled');
+                if (idx === question.correct) {
+                    opt.classList.add('correct');
+                }
+            });
+
+            if (selectedIndex !== question.correct) {
+                options[selectedIndex].classList.add('incorrect');
+            }
+            
+            explanationDiv.style.display = 'block';
+        }
+        
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            if(lang === 'gu') {
+                btnGu.classList.add('active');
+                btnEn.classList.remove('active');
+            } else {
+                btnEn.classList.add('active');
+                btnGu.classList.remove('active');
+            }
+            renderQuiz();
+        }
+
+        // Initial setup
+        window.onload = () => {
+            shuffledQuestions = [...quizData];
+            shuffleArray(shuffledQuestions);
+            renderQuiz();
+        };
+    </script>
+
+</body>
+</html>

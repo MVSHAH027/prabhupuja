@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Essence of Prabhu Puja</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .gujarati {
+            font-family: 'Noto Sans Gujarati', sans-serif;
+        }
+        .lang-en, .lang-gu {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .hidden-lang {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            line-height: 0;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border: 1px solid #e5e7eb;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .btn-lang {
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .btn-lang.active {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .btn-lang:not(.active) {
+            background-color: #e0e7ff;
+            color: #4338ca;
+        }
+        .icon-bg {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <div class="max-w-2xl mx-auto p-4 sm:p-6">
+
+        <!-- Header and Language Selector -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-indigo-700 gujarati lang-gu">પ્રભુપૂજાનું તત્વ</h1>
+            <h1 class="text-3xl font-bold text-indigo-700 lang-en">The Essence of Prabhu Puja</h1>
+            
+            <p class="mt-2 text-gray-600 gujarati lang-gu">શા માટે પ્રભુપૂજા કરવી જોઈએ?</p>
+            <p class="mt-2 text-gray-600 lang-en">Why should we perform Prabhu Puja?</p>
+
+            <div class="flex justify-center space-x-4 mt-6">
+                <button id="btn-gu" class="btn-lang gujarati active">ગુજરાતી</button>
+                <button id="btn-en" class="btn-lang">English</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- Introduction Card -->
+            <div class="card bg-indigo-50 border-indigo-200">
+                <div class="flex items-center">
+                    <div class="icon-bg bg-indigo-100 mr-4">
+                        <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-lg text-indigo-800 gujarati lang-gu">પૂજા એક આવશ્યકતા છે</h2>
+                        <h2 class="font-bold text-lg text-indigo-800 lang-en">Puja is a Necessity</h2>
+                        <p class="text-gray-700 mt-1 gujarati lang-gu">જેમ શરીર માટે ખોરાક જરૂરી છે, તેમ આત્માની શુદ્ધિ માટે પૂજા જરૂરી છે.</p>
+                        <p class="text-gray-700 mt-1 lang-en">Just as food is essential for the body, Puja is essential for the purification of the soul.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Benefits of Puja -->
+            <div class="text-center my-10">
+                <h2 class="text-2xl font-bold text-gray-800 gujarati lang-gu">પ્રભુપૂજાના ૬ મુખ્ય લાભો</h2>
+                <h2 class="text-2xl font-bold text-gray-800 lang-en">The 6 Key Benefits of Prabhu Puja</h2>
+            </div>
+            
+            <!-- Benefit 1 -->
+            <div class="card">
+                <div class="flex items-start">
+                    <div class="icon-bg bg-green-100 mr-4 flex-shrink-0">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 gujarati lang-gu">જીવન લક્ષ્ય અને ઊર્જા</h3>
+                        <h3 class="font-semibold text-gray-900 lang-en">Life Goal & Energy</h3>
+                        <p class="text-gray-600 mt-1 gujarati lang-gu">જીવનનું સાચું લક્ષ્ય પ્રાપ્ત થાય છે અને તે માટે પ્રયત્ન કરવાની ઊર્જા મળે છે.</p>
+                        <p class="text-gray-600 mt-1 lang-en">It helps us realize our true life goal and gives us the energy to strive for it.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefit 2 -->
+            <div class="card">
+                <div class="flex items-start">
+                    <div class="icon-bg bg-red-100 mr-4 flex-shrink-0">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 gujarati lang-gu">રાગ-દ્વેષ અને દુઃખમાં ઘટાડો</h3>
+                        <h3 class="font-semibold text-gray-900 lang-en">Reduces Attachment & Suffering</h3>
+                        <p class="text-gray-600 mt-1 gujarati lang-gu">રાગ-દ્વેષ ઘટે છે, જેના કારણે જીવનના દુઃખો પણ ઓછા થાય છે.</p>
+                        <p class="text-gray-600 mt-1 lang-en">It diminishes attachment and aversion, which in turn reduces life's sorrows.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefit 3 -->
+            <div class="card">
+                <div class="flex items-start">
+                    <div class="icon-bg bg-yellow-100 mr-4 flex-shrink-0">
+                         <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 gujarati lang-gu">માનસિક પ્રસન્નતા</h3>
+                        <h3 class="font-semibold text-gray-900 lang-en">Mental Happiness</h3>
+                        <p class="text-gray-600 mt-1 gujarati lang-gu">મન પ્રસન્ન રહે છે, શારીરિક અને માનસિક સ્વાસ્થ્ય સુધરે છે.</p>
+                        <p class="text-gray-600 mt-1 lang-en">It brings joy to the mind, improving both physical and mental well-being.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefit 4 -->
+            <div class="card">
+                <div class="flex items-start">
+                    <div class="icon-bg bg-blue-100 mr-4 flex-shrink-0">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 gujarati lang-gu">મનની શાંતિ</h3>
+                        <h3 class="font-semibold text-gray-900 lang-en">Peace of Mind</h3>
+                        <p class="text-gray-600 mt-1 gujarati lang-gu">રોજિંદા જીવનના ગુસ્સા અને તણાવથી મનને શાંતિ મળે છે.</p>
+                        <p class="text-gray-600 mt-1 lang-en">It calms the mind from the storms of daily anger and stress, bringing tranquility.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefit 5 -->
+            <div class="card">
+                <div class="flex items-start">
+                    <div class="icon-bg bg-purple-100 mr-4 flex-shrink-0">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 gujarati lang-gu">અહંકારમાં ઘટાડો</h3>
+                        <h3 class="font-semibold text-gray-900 lang-en">Reduces Ego</h3>
+                        <p class="text-gray-600 mt-1 gujarati lang-gu">અહંકાર ઓછો થવાથી જીવન સરળ અને સુમધુર બને છે.</p>
+                        <p class="text-gray-600 mt-1 lang-en">By decreasing the ego, life becomes smoother and more harmonious.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefit 6 -->
+            <div class="card">
+                <div class="flex items-start">
+                    <div class="icon-bg bg-pink-100 mr-4 flex-shrink-0">
+                        <svg class="w-8 h-8 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900 gujarati lang-gu">સફળતા અને શક્તિ</h3>
+                        <h3 class="font-semibold text-gray-900 lang-en">Success & Power</h3>
+                        <p class="text-gray-600 mt-1 gujarati lang-gu">શારીરિક અને માનસિક શક્તિ વધે છે, જે જીવનમાં સફળતા અપાવે છે.</p>
+                        <p class="text-gray-600 mt-1 lang-en">It boosts physical and mental power, leading to greater success in life.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section: Addressing Misconceptions -->
+            <div class="text-center my-10">
+                <h2 class="text-2xl font-bold text-gray-800 gujarati lang-gu">ગેરસમજોનું નિવારણ</h2>
+                <h2 class="text-2xl font-bold text-gray-800 lang-en">Addressing Common Doubts</h2>
+            </div>
+            
+            <!-- Misconception 1 -->
+            <div class="card bg-teal-50 border-teal-200">
+                <h3 class="font-bold text-lg text-teal-800 gujarati lang-gu">પ્રશ્ન: "ભગવાન તો મોક્ષમાં છે, એમને પૂજાથી શું ફેર પડે?"</h3>
+                <h3 class="font-bold text-lg text-teal-800 lang-en">Doubt: "God is in Moksha, why would they care about our puja?"</h3>
+                <div class="w-full h-px bg-teal-200 my-3"></div>
+                <p class="text-gray-700 gujarati lang-gu"><b>જવાબ:</b> પૂજા ભગવાનને ખુશ કરવા માટે નથી, પરંતુ તેમના ગુણોનું સ્મરણ કરીને આપણામાં શુભભાવ જગાડવા માટે છે. આ શુભભાવ જ પાપનો ક્ષય કરી પુણ્યનું ઉપાર્જન કરાવે છે.</p>
+                <p class="text-gray-700 lang-en"><b>Answer:</b> Puja is not to please God, but to awaken auspicious feelings (Shubh Bhav) within ourselves by remembering their virtues. These feelings destroy sins and generate merit (Punya).</p>
+            </div>
+
+            <!-- Misconception 2 -->
+            <div class="card bg-orange-50 border-orange-200">
+                <h3 class="font-bold text-lg text-orange-800 gujarati lang-gu">પ્રશ્ન: "પૂજામાં તો જીવોની હિંસા થાય છે, તો તે પાપ નથી?"</h3>
+                <h3 class="font-bold text-lg text-orange-800 lang-en">Doubt: "Doesn't puja involve violence (Himsa) towards tiny organisms?"</h3>
+                <div class="w-full h-px bg-orange-200 my-3"></div>
+                <p class="text-gray-700 gujarati lang-gu"><b>જવાબ:</b> શાસ્ત્રો અનુસાર, હિંસાનો આધાર 'અનુબંધ' (પરિણામ) પર છે. પૂજામાં થતી દેખીતી હિંસા (સ્વરૂપ હિંસા) કરતાં તેનો હેતુ અને પરિણામ (અનુબંધ અહિંસા) વધુ મહત્વનું છે. પૂજાનો શુભભાવ જીવને મોક્ષ તરફ લઈ જાય છે, જે અંતે સર્વ જીવોને અભયદાન આપે છે. આથી, તે અનુબંધથી અહિંસા જ છે.</p>
+                <p class="text-gray-700 lang-en"><b>Answer:</b> According to scriptures, the true nature of violence depends on the ultimate consequence (Anubandh). The intention and result of puja is non-violence (Anubandh Ahimsa), which is far more significant than any incidental, superficial violence (Swaroop Himsa). The auspicious feelings from puja lead the soul towards liberation, ultimately granting safety to all beings. Thus, its consequence is non-violence.</p>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 mb-6">
+            <p class="text-gray-600 gujarati lang-gu">મનીષ વી. શાહ</p>
+            <p class="text-gray-600 lang-en">Manish V. Shah</p>
+            <p class="text-gray-500">WhatsApp: 94299 26447 (Vadodara)</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const btnGu = document.getElementById('btn-gu');
+        const btnEn = document.getElementById('btn-en');
+        const gujaratiElements = document.querySelectorAll('.lang-gu');
+        const englishElements = document.querySelectorAll('.lang-en');
+
+        function setLanguage(lang) {
+            if (lang === 'gu') {
+                btnGu.classList.add('active');
+                btnEn.classList.remove('active');
+                
+                gujaratiElements.forEach(el => {
+                    el.classList.remove('hidden-lang');
+                });
+                englishElements.forEach(el => {
+                    el.classList.add('hidden-lang');
+                });
+                localStorage.setItem('preferredLanguage', 'gu');
+            } else {
+                btnEn.classList.add('active');
+                btnGu.classList.remove('active');
+                
+                englishElements.forEach(el => {
+                    el.classList.remove('hidden-lang');
+                });
+                gujaratiElements.forEach(el => {
+                    el.classList.add('hidden-lang');
+                });
+                localStorage.setItem('preferredLanguage', 'en');
+            }
+        }
+
+        btnGu.addEventListener('click', () => setLanguage('gu'));
+        btnEn.addEventListener('click', () => setLanguage('en'));
+
+        // Set initial language based on local storage or default to Gujarati
+        const preferredLanguage = localStorage.getItem('preferredLanguage') || 'gu';
+        setLanguage(preferredLanguage);
+    </script>
+
+</body>
+</html>
